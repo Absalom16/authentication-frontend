@@ -12,7 +12,6 @@ export function register(data, callback) {
       return res.json();
     })
     .then((result) => {
-      result.status = 200;
       callback(result);
     })
     .catch((err) => {
@@ -32,7 +31,6 @@ export function login(data, callback) {
       return res.json();
     })
     .then((result) => {
-      result.status = 200;
       callback(result);
     })
     .catch((err) => {
