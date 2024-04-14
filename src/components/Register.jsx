@@ -20,7 +20,7 @@ export default function Register() {
   const [isRegistered, setIsRegistered] = useState({ registered: false });
 
   const signupData = {
-    username: username,
+    name: username,
     email: email,
     password: password,
   };
