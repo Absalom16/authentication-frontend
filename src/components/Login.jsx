@@ -43,7 +43,10 @@ export default function Login() {
     }
 
     login(signinData, (data) => {
-      console.log(data);
+      setLoading(false);
+      if (data.status === 500) {
+        setServerError(data.message);
+      }
     });
   };
   return (

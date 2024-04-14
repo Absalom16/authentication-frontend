@@ -17,7 +17,7 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false); // State for loading indicator
-  const [isRegistered, setIsRegistered] = useState({ registered: false });
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const signupData = {
     name: username,
@@ -51,7 +51,12 @@ export default function Register() {
     }
 
     register(signupData, (data) => {
-      console.log(data);
+      setLoading(false);
+      if (data.status === 500) {
+        setServerError(data.message);
+      } else if (data.status === 200) {
+        setIsRegistered({ registered: true, message: data.message });
+      }
     });
   };
 
