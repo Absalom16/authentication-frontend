@@ -17,8 +17,7 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false); // State for loading indicator
-  const [isRegistered, setIsRegistered] = useState(false);
-
+  const [serverResponse, setServerResponse] = useState("");
   const signupData = {
     name: username,
     email: email,
@@ -52,10 +51,15 @@ export default function Register() {
 
     register(signupData, (data) => {
       setLoading(false);
-      if (data.status === 500) {
+      if (data.status === 200) {
+        //successful
+        setServerResponse(data.message);
+      } else if (data.status === 409) {
+        //user already exists
+        setServerResponse(data.message);
+      } else if (data.status === 500) {
+        //server error
         setServerError(data.message);
-      } else if (data.status === 200) {
-        setIsRegistered({ registered: true, message: data.message });
       }
     });
   };
@@ -144,7 +148,7 @@ export default function Register() {
               {serverError !== "" && serverError}
             </span>
             <span style={{ color: "green" }}>
-              {isRegistered.registered && isRegistered.message}
+              {serverResponse !== "" && serverResponse}
             </span>
           </CardContent>
         </Card>

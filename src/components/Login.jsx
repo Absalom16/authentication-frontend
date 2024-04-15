@@ -16,6 +16,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false); // State for loading indicator
+  const [serverResponse, setServerResponse] = useState("");
 
   const signinData = {
     email: email,
@@ -44,7 +45,17 @@ export default function Login() {
 
     login(signinData, (data) => {
       setLoading(false);
-      if (data.status === 500) {
+      if (data.status === 200) {
+        //successfull
+        setServerResponse(data.message);
+      } else if (data.status === 401) {
+        //unsuccessfull/ wrong password
+        setServerResponse(data.message);
+      } else if (data.status === 404) {
+        //user not found
+        setServerResponse(data.message);
+      } else if (data.status === 500) {
+        //server error
         setServerError(data.message);
       }
     });
@@ -109,6 +120,10 @@ export default function Login() {
               Login
             </Button>
           </form>
+          <span style={{ color: "green" }}>
+            {serverResponse !== "" && serverResponse}
+          </span>
+
           <span style={{ color: "red" }}>
             {serverError !== "" && serverError}
           </span>

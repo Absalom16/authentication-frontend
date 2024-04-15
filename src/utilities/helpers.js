@@ -8,11 +8,12 @@ export function register(data, callback) {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => {
-      return res.json();
-    })
-    .then((result) => {
-      callback(result);
+    .then(async (res) => {
+      const statusCode = res.status;
+
+      return res.json().then((result) => {
+        callback({ status: statusCode, message: result.message });
+      });
     })
     .catch((err) => {
       console.error("Error", err);
@@ -27,11 +28,32 @@ export function login(data, callback) {
     },
     body: JSON.stringify(data),
   })
-    .then((res) => {
-      return res.json();
+    .then(async (res) => {
+      const statusCode = res.status;
+
+      return res.json().then((result) => {
+        callback({ status: statusCode, message: result.message });
+      });
     })
-    .then((result) => {
-      callback(result);
+    .catch((err) => {
+      console.error("Error", err);
+    });
+}
+
+export function demo(data, callback) {
+  fetch(`${url}/demo`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then(async (res) => {
+      const statusCode = res.status;
+
+      return res.json().then((result) => {
+        callback({ status: statusCode, message: result.message });
+      });
     })
     .catch((err) => {
       console.error("Error", err);
