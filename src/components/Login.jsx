@@ -18,6 +18,20 @@ export default function Login() {
   const [loading, setLoading] = useState(false); // State for loading indicator
   const [serverResponse, setServerResponse] = useState("");
 
+  // Function to parse query parameters from URL
+  const getQueryParameters = () => {
+    const queryString = window.location.search.substring(1);
+    const parameters = {};
+    queryString.split("&").forEach((param) => {
+      const [key, value] = param.split("=");
+      parameters[decodeURIComponent(key)] = decodeURIComponent(value);
+    });
+    return parameters;
+  };
+
+  const parameters = getQueryParameters();
+  const callbackURL = parameters.callbackURL;
+
   const signinData = {
     email: email,
     password: password,
@@ -48,6 +62,26 @@ export default function Login() {
       if (data.status === 200) {
         //successfull
         setServerResponse(data.message);
+        // Define parameters to be passed in the URL
+        const responseParams = {
+          message: data.message,
+          isLoggedIn: true,
+        };
+
+        // Encode parameters into a query string
+        const parameterString = Object.keys(responseParams)
+          .map(
+            (key) =>
+              `${encodeURIComponent(key)}=${encodeURIComponent(
+                responseParams[key]
+              )}`
+          )
+          .join("&");
+
+        // Append parameters to the redirection URL
+        const redirectURL = `${callbackURL}?${parameterString}`;
+
+        window.location.href = redirectURL;
       } else if (data.status === 401) {
         //unsuccessfull/ wrong password
         setServerResponse(data.message);
