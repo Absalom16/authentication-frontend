@@ -7,7 +7,9 @@ export default function PageLayout() {
     <div>
       <Header />
       <Outlet />
-      <Footer />
+      <span style={{ position: "fixed", bottom: 0, left: 0, right: 0 }}>
+        <Footer />
+      </span>
     </div>
   );
 }

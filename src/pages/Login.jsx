@@ -64,8 +64,9 @@ export default function Login() {
         setServerResponse(data.message);
         // Define parameters to be passed in the URL
         const responseParams = {
-          message: data.message,
           isLoggedIn: true,
+          user: data.user.username,
+          email: data.user.email,
         };
 
         // Encode parameters into a query string

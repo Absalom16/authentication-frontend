@@ -32,7 +32,11 @@ export function login(data, callback) {
       const statusCode = res.status;
 
       return res.json().then((result) => {
-        callback({ status: statusCode, message: result.message });
+        callback({
+          status: statusCode,
+          message: result.message,
+          user: statusCode == 200 ? result.user : "",
+        });
       });
     })
     .catch((err) => {
