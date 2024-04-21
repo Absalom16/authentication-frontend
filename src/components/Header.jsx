@@ -25,7 +25,7 @@ import {
 //   faSignOut,
 // } from "@fortawesome/free-solid-svg-icons";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 // import { useSelector, useDispatch } from "react-redux";
 // import { setUser } from "../store/userSlice";
 
@@ -37,6 +37,7 @@ function Header() {
   const username = "absalom";
 
   //   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -62,6 +63,20 @@ function Header() {
     // dispatch(setUser({}));
     handleClose();
   };
+
+  // Define parameters to be passed in the URL
+  const parameters = {
+    callbackURL: sessionStorage.getItem("callbackURL"),
+  };
+
+  // Encode parameters into a query string
+  const parameterString = Object.keys(parameters)
+    .map(
+      (key) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(parameters[key])}`
+    )
+    .join("&");
+
   return (
     <div style={{ flexGrow: 1, width: "100%" }}>
       <AppBar position="fixed">
@@ -74,7 +89,7 @@ function Header() {
             }}
           >
             <NavLink
-              to="/"
+              // to="/"
               style={{
                 color: "white",
               }}
@@ -96,36 +111,38 @@ function Header() {
           {!isSmallScreen && (
             <div style={{ display: "flex", alignItems: "center" }}>
               {!isLoggedIn && (
-                <NavLink to="/register">
-                  <Button
-                    sx={{
-                      "&:hover": { backgroundColor: "#212121" },
-                      color: "white",
-                    }}
-                  >
-                    <span style={{ marginRight: "0.5em" }}>
-                      {/* <FontAwesomeIcon icon={faUserPlus} /> */}
-                    </span>
-                    Signup
-                  </Button>
-                </NavLink>
+                <Button
+                  sx={{
+                    "&:hover": { backgroundColor: "#212121" },
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    navigate(`/register?${parameterString}`);
+                  }}
+                >
+                  <span style={{ marginRight: "0.5em" }}>
+                    {/* <FontAwesomeIcon icon={faUserPlus} /> */}
+                  </span>
+                  Signup
+                </Button>
               )}
 
               {!isLoggedIn ? (
-                <NavLink to="/login">
-                  <Button
-                    // color="inherit"
-                    sx={{
-                      "&:hover": { backgroundColor: "#212121" },
-                      color: "white",
-                    }}
-                  >
-                    <span style={{ marginRight: "0.5em" }}>
-                      {/* <FontAwesomeIcon icon={faSignIn} /> */}
-                    </span>
-                    Login
-                  </Button>
-                </NavLink>
+                <Button
+                  // color="inherit"
+                  sx={{
+                    "&:hover": { backgroundColor: "#212121" },
+                    color: "white",
+                  }}
+                  onClick={() => {
+                    navigate(`/login?${parameterString}`);
+                  }}
+                >
+                  <span style={{ marginRight: "0.5em" }}>
+                    {/* <FontAwesomeIcon icon={faSignIn} /> */}
+                  </span>
+                  Login
+                </Button>
               ) : (
                 <>
                   <Avatar

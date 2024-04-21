@@ -31,6 +31,7 @@ export default function Login() {
 
   const parameters = getQueryParameters();
   const callbackURL = parameters.callbackURL;
+  sessionStorage.setItem("callbackURL", callbackURL);
 
   const signinData = {
     email: email,
@@ -80,9 +81,13 @@ export default function Login() {
           .join("&");
 
         // Append parameters to the redirection URL
-        const redirectURL = `${callbackURL}?${parameterString}`;
+        const redirectURL = `${sessionStorage.getItem(
+          "callbackURL"
+        )}?${parameterString}`;
 
-        window.location.href = redirectURL;
+        setTimeout(() => {
+          window.location.href = redirectURL;
+        }, 1000);
       } else if (data.status === 401) {
         //unsuccessfull/ wrong password
         setServerResponse(data.message);

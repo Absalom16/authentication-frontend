@@ -27,6 +27,19 @@ export default function Register() {
 
   const navigate = useNavigate();
 
+  // Define parameters to be passed in the URL
+  const parameters = {
+    callbackURL: sessionStorage.getItem("callbackURL"),
+  };
+
+  // Encode parameters into a query string
+  const parameterString = Object.keys(parameters)
+    .map(
+      (key) =>
+        `${encodeURIComponent(key)}=${encodeURIComponent(parameters[key])}`
+    )
+    .join("&");
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,7 +68,7 @@ export default function Register() {
       if (data.status === 200) {
         //successful
         setServerResponse(data.message);
-        navigate("/login");
+        navigate(`/login?${parameterString}`);
       } else if (data.status === 409) {
         //user already exists
         setServerResponse(data.message);
