@@ -8,6 +8,7 @@ import {
   CardContent,
   CircularProgress,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { register } from "../utilities/helpers.js";
 
 export default function Register() {
@@ -24,7 +25,7 @@ export default function Register() {
     password: password,
   };
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -54,6 +55,7 @@ export default function Register() {
       if (data.status === 200) {
         //successful
         setServerResponse(data.message);
+        navigate("/login");
       } else if (data.status === 409) {
         //user already exists
         setServerResponse(data.message);
