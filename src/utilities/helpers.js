@@ -1,4 +1,4 @@
-const url = "http://localhost:3333"; //http://localhost:3333 //https://authentication-service-gjtz.onrender.com
+const url = "https://authentication-service-gjtz.onrender.com"; //http://localhost:3333 //https://authentication-service-gjtz.onrender.com
 
 export function register(data, callback) {
   fetch(`${url}/register`, {
